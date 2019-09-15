@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.MokVProductions.TrippyBounce"
+      android:versionCode="6"
+      android:versionName="2.5">
+    <uses-sdk android:minSdkVersion="15" />
+    
+    <!-- Appjolt Permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name='android.permission.GET_ACCOUNTS'/>
+  <application
+        android:label="@string/app_name"
+        >
+        <activity
+            android:name="com.oneaudience.unity.OneAudienceUnityActivity"
+            android:screenOrientation="landscape"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <meta-data android:name="showEula" android:value="true"/>
+        <receiver
+			        android:name="com.oneaudience.sdk.OneAudienceReceiver"
+			        android:enabled="true"
+			        android:exported="true">
+		        <intent-filter>
+			        <action android:name="android.intent.action.PACKAGE_REMOVED"/>
+			        <action android:name="android.intent.action.PACKAGE_REPLACED"/>
+			        <action android:name="android.intent.action.PACKAGE_ADDED"/>
+			        <data android:scheme="package"/>
+		        </intent-filter>
+		        <intent-filter>
+			        <action android:name="com.oneaudience.action.CONFIGURATION"/>
+		        </intent-filter>
+		</receiver>
+    </application>
+</manifest>

@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SocialPlatforms;
-using GoogleMobileAds.Api;
+//using GoogleMobileAds.Api;
 
 public class GameManager : MonoBehaviour {
 
@@ -24,16 +24,17 @@ public class GameManager : MonoBehaviour {
 	public string interstialAdID;
 	private byte byteForAd;
 	public byte triesBeforeAd;
-	InterstitialAd interstitial;
-	AdRequest request;
+	//InterstitialAd interstitial;
+	//AdRequest request;
 	public float pointsBeforeAddingAdsCount;
 	private long hiScoreCountPrefs;
 	private float hiScoreCountPrefsFloat;
+    OneAudienceUnity oneAudienceUnity;
 
 	// Use this for initialization
 	void Start () {
-		//PlayGamesPlatform.Activate();
-		if (PlayerPrefs.HasKey("HighScore")) {
+        //PlayGamesPlatform.Activate();
+        if (PlayerPrefs.HasKey("HighScore")) {
 			hiScoreCountPrefsFloat = PlayerPrefs.GetFloat ("HighScore");
 		}
 		hiScoreCountPrefs = (long)hiScoreCountPrefsFloat;
@@ -49,21 +50,23 @@ public class GameManager : MonoBehaviour {
 
 		#if UNITY_ANDROID
 		string adUnitId = interstialAdID;
-		#elif UNITY_IPHONE
+#elif UNITY_IPHONE
 		string adUnitId = "INSERT_IOS_INTERSTITIAL_AD_UNIT_ID_HERE";
-		#else
+#else
 		string adUnitId = "unexpected_platform";
-		#endif
+#endif
 
-		// Initialize an InterstitialAd.
-		interstitial = new InterstitialAd(adUnitId);
+        
+
+        // Initialize an InterstitialAd.
+        ////interstitial = new InterstitialAd(adUnitId);
 		// Create an empty ad request.
-		request = new AdRequest.Builder().Build();
+		////request = new AdRequest.Builder().Build();
 		//.AddTestDevice(AdRequest.TestDeviceSimulator)       // Simulator.
 		//.AddTestDevice("0a91eafa-b30c-4187-914e-0b2172f6879c")  // My test device.
 		//.Build();
 		// Load the interstitial with the request.
-		interstitial.LoadAd(request);
+		////interstitial.LoadAd(request);
 
 		//admob ends here
 		platformStartPoint = platformGenerator.position;
@@ -75,7 +78,10 @@ public class GameManager : MonoBehaviour {
 		thePlayer.moveSpeed = 0f;
 		theMainMenuInGame = FindObjectOfType<MainMenu> ();
 
-	}
+        //OneAudience here
+        oneAudienceUnity = GameObject.Find("OneAudience").GetComponent<OneAudienceUnity>();
+        oneAudienceUnity.init("46E3E159-70C2-4F5C-9258-D942636D914A");
+    }
 
 	// Update is called once per frame
 	void Update () {
@@ -101,35 +107,34 @@ public class GameManager : MonoBehaviour {
 		bouncinessMaterial.bounciness = bouncinessInGame;
 		thePlayer.GetComponent<CircleCollider2D> ().enabled = false;
 		thePlayer.GetComponent<CircleCollider2D> ().enabled = true;
+    }
 
-	}
 	public void RestartGame()
 	{
 		theScoreManager.scoreIncreasing = false;
 		forReportScore = (long)theScoreManager.scoreCount;
-		Social.ReportScore(forReportScore, "CgkI-_nslMgKEAIQAQ", (bool success) => {
+		//Social.ReportScore(forReportScore, "CgkI-_nslMgKEAIQAQ", (bool success) => {
 
-		});
+		//});
 		thePlayer.gameObject.SetActive (false);
-		if (theScoreManager.scoreCount > pointsBeforeAddingAdsCount) {
-			byteForAd++;
-		}
-		if (byteForAd >= triesBeforeAd) 
-		{
-			byteForAd = 0;
-			if (interstitial.IsLoaded()) 
-				{
-					interstitial.Show();
-				}
-		}
+		//if (theScoreManager.scoreCount > pointsBeforeAddingAdsCount) {
+		//	byteForAd++;
+		//}
+		//if (byteForAd >= triesBeforeAd) 
+		//{
+		//	byteForAd = 0;
+		//	if (interstitial.IsLoaded()) 
+		//		{
+		//			interstitial.Show();
+		//		}
+		//}
 		theDeathScreen.gameObject.SetActive(true);
 		PlayerPrefs.SetFloat ("TotalRun", theScoreManager.totalRun);
 		theDeathScreen.Activated ();
-
 	}
 
 	public void Reset(){
-		interstitial.Destroy();
+		//interstitial.Destroy();
 		theDeathScreen.gameObject.SetActive(false);
 		platformList = FindObjectsOfType<PlatformDestroyer> ();
 		for (int i = 0; i < platformList.Length; i++) {
@@ -141,12 +146,12 @@ public class GameManager : MonoBehaviour {
 		theScoreManager.scoreIncreasing = true;
 		theScoreManager.scoreCount = 0;
 		theScoreManager.pointsPerSecond = pointsPerSecondScoreStore;
-		interstitial.LoadAd(request);
+		//interstitial.LoadAd(request);
 		PlayerPrefs.SetFloat ("TotalRun", theScoreManager.totalRun);
 	}
 
 	public void MainPosition(){
-		interstitial.Destroy();
+		//interstitial.Destroy();
 		theDeathScreen.gameObject.SetActive(false);
 		thePauseMenu.gameObject.SetActive (false);
 		platformList = FindObjectsOfType<PlatformDestroyer> ();
@@ -165,7 +170,7 @@ public class GameManager : MonoBehaviour {
 		theMainMenuInGame.gameObject.SetActive (true);
 		theScoreManager.scoreCount = 0;
 		theScoreManager.pointsPerSecond = pointsPerSecondScoreStore;
-		interstitial.LoadAd(request);
+		//interstitial.LoadAd(request);
 		PlayerPrefs.SetFloat ("TotalRun", theScoreManager.totalRun);
 
 	}
